@@ -1,0 +1,27 @@
+.mainContainer {
+  margin: 25px;
+  height: 600px;
+  text-align: center;
+}
+
+.connectButton {
+  position:absolute;
+  top: 30px;
+  right: 29px;
+}
+
+.context {
+  font-family: Arial;
+  margin: 10;
+}
+.header {
+  padding: 60px;
+  text-align: center;
+  background: #2196f3;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+}
+.mintButton {
+  color:#2196f3;
+}
+
