@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import { ethers } from "ethers";
 import './App.css';
+import React, {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
-import MintDialog from './button/MintDialog';
+import MintDialog from './MintDialog';
+import NoWallet from './NoWallet'
 
 const App = () => {
   const {ethereum} = window;
-  if (!ethereum) {return;}
+  if (!ethereum) {
+    return(NoWallet());
+  }
   //
   const [currentNetwork, setCurrentNetwork] = useState();
   const [currentAccount, setCurrentAccount] = useState("");

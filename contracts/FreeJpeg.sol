@@ -1,24 +1,35 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
-
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+pragma solidity ^0.8.10;
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "hardhat/console.sol";
-
 import { Base64 } from "./libraries/Base64.sol";
 
-contract FreeJpeg is ERC721, ERC721URIStorage {
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIdCounter;
-
-    constructor() ERC721("FreeJpeg", "MFJN") {}
-
+contract FreeJpeg is Initializable, 
+                     ERC721Upgradeable, 
+                     ERC721URIStorageUpgradeable, 
+                     OwnableUpgradeable 
+{
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter private _tokenIdCounter;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    //constructor() {
+    //    _disableInitializers();
+    //}
+    function initialize() initializer public {
+        __ERC721_init("FreeJpeg", "FRJP");
+        __ERC721URIStorage_init();
+        __Ownable_init();
+    }
     function safeMint(address to, 
                       string memory uri, 
                       string memory name, 
-                      string memory desciption) public {
+                      string memory desciption) public 
+    {
+        uint256 tokenId = _tokenIdCounter.current();
         
         string memory json = Base64.encode(
             bytes(
@@ -37,7 +48,6 @@ contract FreeJpeg is ERC721, ERC721URIStorage {
             abi.encodePacked("data:application/json;base64,", json)
         );
 
-        uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, finalTokenUri);
         _tokenIdCounter.increment();
@@ -52,15 +62,16 @@ contract FreeJpeg is ERC721, ERC721URIStorage {
             )
         );
     }
-
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
+    {
         super._burn(tokenId);
     }
-
     function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721, ERC721URIStorage)
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
         returns (string memory)
     {
         return super.tokenURI(tokenId);

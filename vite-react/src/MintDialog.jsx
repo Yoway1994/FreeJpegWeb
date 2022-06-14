@@ -6,14 +6,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import ABI from "../../../artifacts/contracts/FreeJpegContract.sol/FreeJpeg.json"
+import ABI from "../../artifacts/contracts/FreeJpeg.sol/FreeJpeg.json"
 import { ethers } from "ethers";
 
 const mintNFT = async(_url, _name, _description) => {
   const {ethereum} = window;
   const accounts = await ethereum.request({method: "eth_accounts"});
   const accout = accounts[0];
-  const contractAddress = "0x93e35BafB5A73f9BC551e3D2861197D0C419656f"
+  const contractAddress = "0x4FFa098616122FD3c4894AA3288D345f540B2fbC"
   const contractABI = ABI.abi;
   const provider = new ethers.providers.Web3Provider(ethereum);
   const signer = provider.getSigner();
